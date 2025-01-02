@@ -1,0 +1,17 @@
+jupyterlab 
+pyarrow
+pandas 
+numpy 
+matplotlib
+seaborn
+scipy
+scikit-learn
+wget
+konlpy
+pymongo
+python-mecab-ko 
+pyLDAvis
+finance-datareader
+plotly
+openpyxl
+pykrx
