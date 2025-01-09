@@ -1,31 +1,56 @@
-TransactionID: 각 거래 식별하는 ID
-TransactionDate: 거래가 발생한 시간 정보, 날짜 명시는 안되어있고 시간정보만 포함
-Amount: 거래 금액을 나타내며, 해당 거래에 사용된 금액
-MerchantID: 거래에 참여한 상인을 고유하게 식별하는 ID
-TransactionType: 거래 유형을 나타내며, refund(환불) 또는 purchase(구매)로 표시
-Location: 거래가 이루어진 지리적 위치(도시)
-IsFraud: 해당 거래가 사기인지 여부를 나타내는 이진 변수로, 0은 사기가 아님, 1은 사기임을 의미
+# 거래 패턴 분석
 
-#   Column           Non-Null Count   Dtype  
----  ------           --------------   -----  
- 0   TransactionID    100000 non-null  int64  
- 1   TransactionDate  100000 non-null  object 
- 2   Amount           100000 non-null  float64
- 3   MerchantID       100000 non-null  int64  
- 4   TransactionType  100000 non-null  object 
- 5   Location         100000 non-null  object 
- 6   IsFraud          100000 non-null  int64  
-dtypes: float64(1), int64(3), object(3)
+## 문제 정의
+거래 데이터(`TransactionID`, `TransactionDate`, `Amount`, `MerchantID`, `TransactionType`, `Location`)를 분석하여 특정 지역 또는 상점에서의 거래 패턴을 탐색합니다.
 
-결측치 없음 ㄷㄷ
+## 목표
+- **시간대별 거래량 및 금액 변화 탐구**
+  - 특정 시간대(예: 점심시간, 저녁시간)에 거래 금액 증가 여부 분석
+- **특정 지역에서 자주 발생하는 거래 유형 분석**
+  - 각 지역에서 환불과 구매의 비율 분석
+- **평균 거래 금액 및 이상치 탐지**
+  - 전체 및 특정 시간대의 평균 거래 금액 산출 및 이상치 탐지
+
+## 배경
+거래 패턴을 이해하면 판매 촉진 캠페인을 적절한 시간과 장소에 최적화할 수 있으며, 고객의 소비 습관을 파악할 수 있습니다.
 
 
-제안 1: 거래 패턴 분석
-문제 정의:
- 거래 데이터(TransactionID, TransactionDate, Amount, MerchantID, TransactionType, Location)를 분석하여 특정 지역 또는 상점에서의 거래 패턴을 탐색합니다.
-목표:
-시간대별 거래량 및 금액 변화 탐구
-특정 지역에서 자주 발생하는 거래 유형 분석
-평균 거래 금액 및 이상치 탐지
-배경:
- 거래 패턴을 이해하면 판매 촉진 캠페인을 적절한 시간과 장소에 최적화할 수 있으며, 고객의 소비 습관을 파악할 수 있습니다.
+## 데이터 설명
+- `TransactionID`: 각 거래를 식별하는 고유 ID
+- `TransactionDate`: 거래가 발생한 시간 정보 (날짜 미포함, 시간 정보만 포함)
+- `Amount`: 거래 금액
+- `MerchantID`: 거래에 참여한 상인을 고유하게 식별하는 ID
+- `TransactionType`: 거래 유형 (`refund`: 환불, `purchase`: 구매)
+- `Location`: 거래가 이루어진 지리적 위치 (도시)
+- `IsFraud`: 해당 거래가 사기인지 여부를 나타내는 이진 변수 (`0`: 사기 아님, `1`: 사기)
+
+### 데이터 타입 및 결측치 여부
+- `TransactionID`: `int64`
+- `TransactionDate`: `object`
+- `Amount`: `float64`
+- `MerchantID`: `int64`
+- `TransactionType`: `object`
+- `Location`: `object`
+- `IsFraud`: `int64`
+
+결측치 없음 (100,000개 데이터 모두 유효)
+
+---
+
+## EDA 분석
+
+### 1. 시간대별 거래량 및 금액 변화 탐구
+- **시간대별 거래 패턴 시각화**
+- **거래 금액의 시간대별 평균 및 분포 분석**
+
+### 2. 특정 지역에서 자주 발생하는 거래 유형 분석
+- **각 지역별 환불 및 구매 비율 분석**
+- **파이 차트를 이용한 거래 유형 분포 시각화**
+
+### 3. 평균 거래 금액 및 이상치 탐지
+- **전체 및 시간대별 평균 거래 금액 계산**
+- **IQR 방식으로 이상치 탐지 및 시각화**
+
+## 통계적 검증
+- **t-test**를 통한 시간대별 거래 금액 차이 검증
+- **Chi-square test**를 통한 지역별 거래 유형 분포 차이 검증
